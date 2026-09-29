@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You Are Invited!</title>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+--bg-pink: #fdf5f7;
+--envelope-color: #e3b2be;
+--envelope-inside: #d49ba8;
+--accent-gold: #c5a059;
+--text-dark: #4a3b40;
+--card-bg: #ffffff;
+}
+
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+body {
+font-family: 'Cormorant Garamond', serif;
+background-color: var(--bg-pink);
+color: var(--text-dark);
+display: flex;
+flex-direction: column;
+align-items: center;
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* Music Toggle Button */
+.audio-control {
+position: fixed;
+top: 20px;
+right: 20px;
+z-index: 100;
+background: rgba(255, 255, 255, 0.9);
+border: 1px solid var(--accent-gold);
+border-radius: 50%;
+width: 45px;
+height: 45px;
+display: flex;
+justify-content: center;
+align-items: center;
+cursor: pointer;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+font-size: 1.2rem;
+}
+
+/* Envelope Opening Screen */
+.envelope-wrapper {
+position: relative;
+width: 100%;
+max-width: 420px;
+height: 100vh;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 20px;
+transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.envelope {
+position: relative;
+width: 310px;
+height: 210px;
+background-color: var(--envelope-color);
+border-radius: 8px;
+box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+cursor: pointer;
+perspective: 1000px;
+}
+
+.flap {
+position: absolute;
+top: 0;
+left: 0;
+width: 0;
+height: 0;
+border-left: 155px solid transparent;
+border-right: 155px solid transparent;
+border-top: 115px solid var(--envelope-inside);
+transform-origin: top;
+transition: transform 0.6s ease-in-out;
+z-index: 3;
+}
+
+.wax-seal {
+position: absolute;
+top: 85px;
+left: 50%;
+transform: translateX(-50%);
+width: 55px;
+height: 55px;
+background: radial-gradient(circle, #d4af37 0%, #aa7c11 100%);
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+color: #fff;
+font-size: 1.4rem;
+box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+z-index: 4;
+transition: transform 0.3s;
+}
+
+.wax-seal:hover {
+transform: translateX(-50%) scale(1.08);
+}
+
+.envelope-text {
+position: absolute;
+bottom: 22px;
+width: 100%;
+text-align: center;
+font-family: 'Montserrat', sans-serif;
+font-size: 0.8rem;
+letter-spacing: 2px;
+color: #fff;
+text-transform: uppercase;
+z-index: 2;
+}
+
+/* Main Invitation Container */
+.invitation-container {
+display: none;
+width: 100%;
+max-width: 450px;
+padding: 20px 15px;
+opacity: 0;
+transform: translateY(30px);
+transition: opacity 1s ease, transform 1s ease;
+}
+
+.invitation-container.visible {
+display: block;
+opacity: 1;
+transform: translateY(0);
+}
+
+.card {
+background: var(--card-bg);
+border: 1px solid #f0e2e6;
+border-radius: 16px;
+padding: 35px 25px;
+margin-bottom: 20px;
+text-align: center;
+box-shadow: 0 8px 25px rgba(0,0,0,0.03);
+}
+
+.script-title {
+font-family: 'Alex Brush', cursive;
+font-size: 3rem;
+color: var(--accent-gold);
+margin-bottom: 10px;
+}
+
+.subtitle {
+font-family: 'Montserrat', sans-serif;
+font-size: 0.75rem;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: #888;
+margin-bottom: 15px;
+}
+
+.names {
+font-size: 2.3rem;
+font-weight: 600;
+line-height: 1.2;
+margin: 15px 0;
+color: var(--text-dark);
+}
+
+.ampersand {
+font-family: 'Alex Brush', cursive;
+font-size: 2.5rem;
+color: var(--accent-gold);
+display: block;
+margin: -5px 0;
+}
+
+/* Live Countdown Grid */
+.countdown-grid {
+display: flex;
+justify-content: center;
+gap: 12px;
+margin: 20px 0;
+}
+
+.time-box {
+background: #faf4f6;
+border: 1px solid #ebd8df;
+border-radius: 8px;
+padding: 10px;
+min-width: 60px;
+}
+
+.time-num {
+font-size: 1.4rem;
+font-weight: 600;
+color: var(--accent-gold);
+}
+
+.time-label {
+font-family: 'Montserrat', sans-serif;
+font-size: 0.55rem;
+text-transform: uppercase;
+letter-spacing: 1px;
+color: #777;
+}
+
+/* Program Schedule Timeline */
+.timeline {
+text-align: left;
+margin-top: 15px;
+position: relative;
+padding-left: 20px;
+border-left: 2px solid var(--accent-gold);
+}
+
+.timeline-item {
+margin-bottom: 20px;
+position: relative;
+}
+
+.timeline-item::before {
+content: '';
+position: absolute;
+left: -26px;
+top: 6px;
+width: 10px;
+height: 10px;
+background: var(--accent-gold);
+border-radius: 50%;
+}
+
+.event-time {
+font-family: 'Montserrat', sans-serif;
+font-size: 0.75rem;
+color: var(--accent-gold);
+font-weight: 500;
+}
+
+.event-title {
+font-size: 1.1rem;
+font-weight: 600;
+}
+
+/* Buttons */
+.btn {
+display: inline-block;
+width: 100%;
+padding: 14px;
+background: var(--accent-gold);
+color: #fff;
+text-decoration: none;
+font-family: 'Montserrat', sans-serif;
+font-size: 0.8rem;
+letter-spacing: 2px;
+text-transform: uppercase;
+border-radius: 30px;
+border: none;
+cursor: pointer;
+margin-top: 15px;
+box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
+transition: background 0.3s;
+}
+
+.btn:hover {
+background: #b08d4b;
+}
+
+/* RSVP Form */
+input, textarea {
+width: 100%;
+padding: 12px;
+margin-bottom: 12px;
+border: 1px solid #e5d8dc;
+border-radius: 8px;
+font-family: 'Montserrat', sans-serif;
+font-size: 0.85rem;
+outline: none;
+}
+
+input:focus, textarea:focus {
+border-color: var(--accent-gold);
+}
+</style>
+</head>
+<body>
+
+<!-- Audio Element (Replace source URL with your audio link if desired) -->
+<audio id="bg-music" loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
+</audio>
+
+<div class="audio-control" onclick="toggleAudio()" title="Toggle Background Music">🎵</div>
+
+<!-- Opening Envelope Screen -->
+<div class="envelope-wrapper" id="envelope-wrapper">
+<div class="envelope" onclick="openEnvelope()">
+<div class="flap" id="flap"></div>
+<div class="wax-seal">💌</div>
+<div class="envelope-text">Tap to Open</div>
+</div>
+</div>
+
+<!-- Main Invitation Content -->
+<div class="invitation-container" id="invitation">
+
+<!-- Hero Card -->
+<div class="card">
+<div class="subtitle">Together with their families</div>
+<div class="names">
+Veer
+<span class="ampersand">&</span>
+Zara
+</div>
+<div class="subtitle">Request the honor of your presence</div>
+<p style="margin-top: 15px; font-style: italic; color: #666;">"Two lives, two hearts, joined together in friendship and love."</p>
+</div>
+
+<!-- Countdown Card -->
+<div class="card">
+<div class="subtitle">Counting Down to the Big Day</div>
+<div class="countdown-grid">
+<div class="time-box">
+<div class="time-num" id="days">00</div>
+<div class="time-label">Days</div>
+</div>
+<div class="time-box">
+<div class="time-num" id="hours">00</div>
+<div class="time-label">Hours</div>
+</div>
+<div class="time-box">
+<div class="time-num" id="mins">00</div>
+<div class="time-label">Mins</div>
+</div>
+<div class="time-box">
+<div class="time-num" id="secs">00</div>
+<div class="time-label">Secs</div>
+</div>
+</div>
+<p><strong>Date:</strong> November 25, 2026</p>
+</div>
+
+<!-- Event Timeline -->
+<div class="card">
+<div class="script-title">Program Schedule</div>
+<div class="timeline">
+<div class="timeline-item">
+<div class="event-time">4:00 PM</div>
+<div class="event-title">Guest Arrival</div>
+<p style="font-size:0.85rem; color:#666;">Welcome drinks & refreshments</p>
+</div>
+<div class="timeline-item">
+<div class="event-time">5:30 PM</div>
+<div class="event-title">Wedding Ceremony</div>
+<p style="font-size:0.85rem; color:#666;">Exchanging vows</p>
+</div>
+<div class="timeline-item">
+<div class="event-time">7:00 PM</div>
+<div class="event-title">Reception & Dinner</div>
+<p style="font-size:0.85rem; color:#666;">Dinner, music & dancing</p>
+</div>
+</div>
+</div>
+
+<!-- Venue Location -->
+<div class="card">
+<div class="script-title">The Venue</div>
+<p style="font-size:1.1rem; font-weight:600;">The Taj Mahal Palace</p>
+<p style="color:#666; margin-bottom: 15px;">Apollo Bandar, Colaba, Mumbai</p>
+<a href="https://maps.google.com" target="_blank" class="btn">View on Google Maps</a>
+</div>
+
+<!-- RSVP Form -->
+<div class="card">
+<div class="subtitle">RSVP</div>
+<p style="font-size:0.85rem; margin-bottom: 15px; color:#666;">Please confirm your presence before October 31</p>
+<form onsubmit="submitRSVP(event)">
+<input type="text" placeholder="Your Full Name" required>
+<input type="email" placeholder="Your Email Address" required>
+<textarea rows="3" placeholder="Warm wishes or dietary requirements..."></textarea>
+<button type="submit" class="btn">Send Response</button>
+</form>
+</div>
+
+</div>
+
+<script>
+// Open Envelope Animation
+function openEnvelope() {
+const flap = document.getElementById('flap');
+const wrapper = document.getElementById('envelope-wrapper');
+const invitation = document.getElementById('invitation');
+
+flap.style.transform = 'rotateX(180deg)';
+
+setTimeout(() => {
+wrapper.style.opacity = '0';
+wrapper.style.transform = 'scale(0.9)';
+setTimeout(() => {
+wrapper.style.display = 'none';
+invitation.classList.add('visible');
+playAudio();
+}, 500);
+}, 600);
+}
+
+// Audio Playback Handler
+const audio = document.getElementById('bg-music');
+let isPlaying = false;
+
+function playAudio() {
+audio.play().then(() => {
+isPlaying = true;
+}).catch(() => {
+// Handle browser autoplay policy restrictions
+});
+}
+
+function toggleAudio() {
+if (isPlaying) {
+audio.pause();
+isPlaying = false;
+} else {
+audio.play();
+isPlaying = true;
+}
+}
+
+// Countdown Timer Calculation
+const targetDate = new Date("Nov 25, 2026 16:00:00").getTime();
+
+setInterval(() => {
+const now = new Date().getTime();
+const diff = targetDate - now;
+
+if (diff > 0) {
+document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+document.getElementById('mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+document.getElementById('secs').innerText = Math.floor((diff % (1000 * 60)) / 1000);
+}
+}, 1000);
+
+function submitRSVP(e) {
+e.preventDefault();
+alert("Thank you! Your RSVP has been received.");
+}
+</script>
+</body>
+</html> 
