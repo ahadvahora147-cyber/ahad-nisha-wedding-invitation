@@ -1,460 +1,537 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>You Are Invited!</title>
-<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root {
---bg-pink: #fdf5f7;
---envelope-color: #e3b2be;
---envelope-inside: #d49ba8;
---accent-gold: #c5a059;
---text-dark: #4a3b40;
---card-bg: #ffffff;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ahad & Nisa - Wedding Invitation</title>
+  <!-- Google Fonts: Amiri (Arabic), Cinzel (Royal Serif), Montserrat (Clean Sans) -->
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-velvet: #2a0007;
+      --card-velvet: #42030b;
+      --gold-primary: #d4af37;
+      --gold-light: #f3e5ab;
+      --gold-dark: #aa7c11;
+      --text-cream: #fff8e7;
+      --border-gold: #c5a059;
+    }
 
-* {
-box-sizing: border-box;
-margin: 0;
-padding: 0;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body {
-font-family: 'Cormorant Garamond', serif;
-background-color: var(--bg-pink);
-color: var(--text-dark);
-display: flex;
-flex-direction: column;
-align-items: center;
-min-height: 100vh;
-overflow-x: hidden;
-}
+    body {
+      font-family: 'Cinzel', serif;
+      background-color: var(--bg-velvet);
+      background-image: radial-gradient(circle, #42030b 0%, #1a0004 100%);
+      color: var(--text-cream);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-/* Music Toggle Button */
-.audio-control {
-position: fixed;
-top: 20px;
-right: 20px;
-z-index: 100;
-background: rgba(255, 255, 255, 0.9);
-border: 1px solid var(--accent-gold);
-border-radius: 50%;
-width: 45px;
-height: 45px;
-display: flex;
-justify-content: center;
-align-items: center;
-cursor: pointer;
-box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-font-size: 1.2rem;
-}
+    /* Music Toggle Button */
+    .audio-control {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 90;
+      background: rgba(42, 0, 7, 0.85);
+      border: 1px solid var(--gold-primary);
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      font-size: 1.2rem;
+      color: var(--gold-primary);
+    }
 
-/* Envelope Opening Screen */
-.envelope-wrapper {
-position: relative;
-width: 100%;
-max-width: 420px;
-height: 100vh;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 20px;
-transition: opacity 0.8s ease, transform 0.8s ease;
-}
+    /* Video Intro Overlay Screen */
+    .video-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: #000;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
 
-.envelope {
-position: relative;
-width: 310px;
-height: 210px;
-background-color: var(--envelope-color);
-border-radius: 8px;
-box-shadow: 0 15px 35px rgba(0,0,0,0.12);
-cursor: pointer;
-perspective: 1000px;
-}
+    .video-wrapper.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
 
-.flap {
-position: absolute;
-top: 0;
-left: 0;
-width: 0;
-height: 0;
-border-left: 155px solid transparent;
-border-right: 155px solid transparent;
-border-top: 115px solid var(--envelope-inside);
-transform-origin: top;
-transition: transform 0.6s ease-in-out;
-z-index: 3;
-}
+    #intro-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-.wax-seal {
-position: absolute;
-top: 85px;
-left: 50%;
-transform: translateX(-50%);
-width: 55px;
-height: 55px;
-background: radial-gradient(circle, #d4af37 0%, #aa7c11 100%);
-border-radius: 50%;
-display: flex;
-justify-content: center;
-align-items: center;
-color: #fff;
-font-size: 1.4rem;
-box-shadow: 0 4px 8px rgba(0,0,0,0.25);
-z-index: 4;
-transition: transform 0.3s;
-}
+    .video-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(20, 0, 4, 0.55);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 2;
+    }
 
-.wax-seal:hover {
-transform: translateX(-50%) scale(1.08);
-}
+    .play-btn-circle {
+      width: 75px;
+      height: 75px;
+      background: radial-gradient(circle, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #2a0007;
+      font-size: 1.8rem;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+      margin-bottom: 15px;
+      transition: transform 0.3s;
+    }
 
-.envelope-text {
-position: absolute;
-bottom: 22px;
-width: 100%;
-text-align: center;
-font-family: 'Montserrat', sans-serif;
-font-size: 0.8rem;
-letter-spacing: 2px;
-color: #fff;
-text-transform: uppercase;
-z-index: 2;
-}
+    .video-overlay:hover .play-btn-circle {
+      transform: scale(1.1);
+    }
 
-/* Main Invitation Container */
-.invitation-container {
-display: none;
-width: 100%;
-max-width: 450px;
-padding: 20px 15px;
-opacity: 0;
-transform: translateY(30px);
-transition: opacity 1s ease, transform 1s ease;
-}
+    .overlay-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      text-align: center;
+    }
 
-.invitation-container.visible {
-display: block;
-opacity: 1;
-transform: translateY(0);
-}
+    .skip-btn {
+      position: absolute;
+      bottom: 25px;
+      right: 20px;
+      z-index: 3;
+      background: rgba(42, 0, 7, 0.85);
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-light);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
 
-.card {
-background: var(--card-bg);
-border: 1px solid #f0e2e6;
-border-radius: 16px;
-padding: 35px 25px;
-margin-bottom: 20px;
-text-align: center;
-box-shadow: 0 8px 25px rgba(0,0,0,0.03);
-}
+    /* Main Invitation Container */
+    .invitation-container {
+      display: none;
+      width: 100%;
+      max-width: 460px;
+      padding: 25px 15px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
 
-.script-title {
-font-family: 'Alex Brush', cursive;
-font-size: 3rem;
-color: var(--accent-gold);
-margin-bottom: 10px;
-}
+    .invitation-container.visible {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-.subtitle {
-font-family: 'Montserrat', sans-serif;
-font-size: 0.75rem;
-letter-spacing: 3px;
-text-transform: uppercase;
-color: #888;
-margin-bottom: 15px;
-}
+    /* Cards with Royal Gold Border & Red Velvet Finish */
+    .card {
+      background: linear-gradient(145deg, var(--card-velvet), #2d0006);
+      border: 2px solid transparent;
+      border-image: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) 1;
+      border-radius: 4px;
+      padding: 35px 25px;
+      margin-bottom: 25px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
 
-.names {
-font-size: 2.3rem;
-font-weight: 600;
-line-height: 1.2;
-margin: 15px 0;
-color: var(--text-dark);
-}
+    /* Arabic Calligraphy Styles */
+    .arabic-bismillah {
+      font-family: 'Amiri', serif;
+      font-size: 1.8rem;
+      color: var(--gold-light);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
 
-.ampersand {
-font-family: 'Alex Brush', cursive;
-font-size: 2.5rem;
-color: var(--accent-gold);
-display: block;
-margin: -5px 0;
-}
+    .arabic-quote {
+      font-family: 'Amiri', serif;
+      font-size: 1.35rem;
+      color: var(--gold-primary);
+      margin: 15px 0 10px;
+      line-height: 1.6;
+      direction: rtl;
+    }
 
-/* Live Countdown Grid */
-.countdown-grid {
-display: flex;
-justify-content: center;
-gap: 12px;
-margin: 20px 0;
-}
+    .quote-translation {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      color: #d1b8c0;
+      font-style: italic;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
 
-.time-box {
-background: #faf4f6;
-border: 1px solid #ebd8df;
-border-radius: 8px;
-padding: 10px;
-min-width: 60px;
-}
+    .subtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 15px;
+    }
 
-.time-num {
-font-size: 1.4rem;
-font-weight: 600;
-color: var(--accent-gold);
-}
+    .names {
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin: 15px 0;
+      color: var(--gold-light);
+      text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+      letter-spacing: 2px;
+    }
 
-.time-label {
-font-family: 'Montserrat', sans-serif;
-font-size: 0.55rem;
-text-transform: uppercase;
-letter-spacing: 1px;
-color: #777;
-}
+    .ampersand {
+      font-family: 'Amiri', serif;
+      font-size: 2rem;
+      color: var(--gold-primary);
+      display: block;
+      margin: -5px 0;
+    }
 
-/* Program Schedule Timeline */
-.timeline {
-text-align: left;
-margin-top: 15px;
-position: relative;
-padding-left: 20px;
-border-left: 2px solid var(--accent-gold);
-}
+    /* Live Countdown Grid */
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
 
-.timeline-item {
-margin-bottom: 20px;
-position: relative;
-}
+    .time-box {
+      background: rgba(20, 0, 4, 0.6);
+      border: 1px solid var(--gold-primary);
+      border-radius: 6px;
+      padding: 10px;
+      min-width: 65px;
+    }
 
-.timeline-item::before {
-content: '';
-position: absolute;
-left: -26px;
-top: 6px;
-width: 10px;
-height: 10px;
-background: var(--accent-gold);
-border-radius: 50%;
-}
+    .time-num {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
 
-.event-time {
-font-family: 'Montserrat', sans-serif;
-font-size: 0.75rem;
-color: var(--accent-gold);
-font-weight: 500;
-}
+    .time-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #c2a8b0;
+    }
 
-.event-title {
-font-size: 1.1rem;
-font-weight: 600;
-}
+    /* Program Schedule Timeline */
+    .timeline {
+      text-align: left;
+      margin-top: 20px;
+      position: relative;
+      padding-left: 20px;
+      border-left: 2px solid var(--gold-primary);
+    }
 
-/* Buttons */
-.btn {
-display: inline-block;
-width: 100%;
-padding: 14px;
-background: var(--accent-gold);
-color: #fff;
-text-decoration: none;
-font-family: 'Montserrat', sans-serif;
-font-size: 0.8rem;
-letter-spacing: 2px;
-text-transform: uppercase;
-border-radius: 30px;
-border: none;
-cursor: pointer;
-margin-top: 15px;
-box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
-transition: background 0.3s;
-}
+    .timeline-item {
+      margin-bottom: 25px;
+      position: relative;
+    }
 
-.btn:hover {
-background: #b08d4b;
-}
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -26px;
+      top: 5px;
+      width: 10px;
+      height: 10px;
+      background: var(--gold-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--gold-primary);
+    }
 
-/* RSVP Form */
-input, textarea {
-width: 100%;
-padding: 12px;
-margin-bottom: 12px;
-border: 1px solid #e5d8dc;
-border-radius: 8px;
-font-family: 'Montserrat', sans-serif;
-font-size: 0.85rem;
-outline: none;
-}
+    .event-date {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      color: var(--gold-light);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
 
-input:focus, textarea:focus {
-border-color: var(--accent-gold);
-}
-</style>
+    .event-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-cream);
+      margin: 2px 0;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #d4af37, #aa7c11);
+      color: #2a0007;
+      font-weight: 600;
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      margin-top: 15px;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #f3e5ab, #d4af37);
+      transform: translateY(-2px);
+    }
+
+    /* RSVP Form */
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      background: rgba(20, 0, 4, 0.5);
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-cream);
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--gold-light);
+      box-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+    }
+  </style>
 </head>
 <body>
 
-<!-- Audio Element (Replace source URL with your audio link if desired) -->
-<audio id="bg-music" loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
-</audio>
+  <!-- Audio Element -->
+  <audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
+  </audio>
 
-<div class="audio-control" onclick="toggleAudio()" title="Toggle Background Music">🎵</div>
+  <div class="audio-control" onclick="toggleAudio()" title="Toggle Music">🎵</div>
 
-<!-- Opening Envelope Screen -->
-<div class="envelope-wrapper" id="envelope-wrapper">
-<div class="envelope" onclick="openEnvelope()">
-<div class="flap" id="flap"></div>
-<div class="wax-seal">💌</div>
-<div class="envelope-text">Tap to Open</div>
-</div>
-</div>
+  <!-- Intro Video Screen Wrapper -->
+  <div class="video-wrapper" id="video-wrapper">
+    <video id="intro-video" playsinline preload="auto">
+      <source src="intro.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
 
-<!-- Main Invitation Content -->
-<div class="invitation-container" id="invitation">
+    <div class="video-overlay" id="video-overlay" onclick="startVideo()">
+      <div class="play-btn-circle">▶</div>
+      <div class="overlay-text">Tap to Open Invitation</div>
+    </div>
 
-<!-- Hero Card -->
-<div class="card">
-<div class="subtitle">Together with their families</div>
-<div class="names">
-Veer
-<span class="ampersand">&</span>
-Zara
-</div>
-<div class="subtitle">Request the honor of your presence</div>
-<p style="margin-top: 15px; font-style: italic; color: #666;">"Two lives, two hearts, joined together in friendship and love."</p>
-</div>
+    <button class="skip-btn" id="skip-btn" onclick="finishVideo()" style="display: none;">Skip</button>
+  </div>
 
-<!-- Countdown Card -->
-<div class="card">
-<div class="subtitle">Counting Down to the Big Day</div>
-<div class="countdown-grid">
-<div class="time-box">
-<div class="time-num" id="days">00</div>
-<div class="time-label">Days</div>
-</div>
-<div class="time-box">
-<div class="time-num" id="hours">00</div>
-<div class="time-label">Hours</div>
-</div>
-<div class="time-box">
-<div class="time-num" id="mins">00</div>
-<div class="time-label">Mins</div>
-</div>
-<div class="time-box">
-<div class="time-num" id="secs">00</div>
-<div class="time-label">Secs</div>
-</div>
-</div>
-<p><strong>Date:</strong> November 25, 2026</p>
-</div>
+  <!-- Main Royal Invitation Webpage -->
+  <div class="invitation-container" id="invitation">
+    
+    <!-- Header & Names Card -->
+    <div class="card">
+      <div class="arabic-bismillah">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <div class="subtitle">Together with their families</div>
+      
+      <div class="names">
+        Ahad
+        <span class="ampersand">&amp;</span>
+        Nisa
+      </div>
+      
+      <div class="subtitle">Invite you to celebrate their union</div>
 
-<!-- Event Timeline -->
-<div class="card">
-<div class="script-title">Program Schedule</div>
-<div class="timeline">
-<div class="timeline-item">
-<div class="event-time">4:00 PM</div>
-<div class="event-title">Guest Arrival</div>
-<p style="font-size:0.85rem; color:#666;">Welcome drinks & refreshments</p>
-</div>
-<div class="timeline-item">
-<div class="event-time">5:30 PM</div>
-<div class="event-title">Wedding Ceremony</div>
-<p style="font-size:0.85rem; color:#666;">Exchanging vows</p>
-</div>
-<div class="timeline-item">
-<div class="event-time">7:00 PM</div>
-<div class="event-title">Reception & Dinner</div>
-<p style="font-size:0.85rem; color:#666;">Dinner, music & dancing</p>
-</div>
-</div>
-</div>
+      <div class="arabic-quote">" وَخَلَقْنَاكُمْ أَزْوَاجًا "</div>
+      <div class="quote-translation">"And We created you in pairs" — Surah An-Naba (78:8)</div>
 
-<!-- Venue Location -->
-<div class="card">
-<div class="script-title">The Venue</div>
-<p style="font-size:1.1rem; font-weight:600;">The Taj Mahal Palace</p>
-<p style="color:#666; margin-bottom: 15px;">Apollo Bandar, Colaba, Mumbai</p>
-<a href="https://maps.google.com" target="_blank" class="btn">View on Google Maps</a>
-</div>
+      <div class="arabic-quote" style="font-size: 1.1rem;">"وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً"</div>
+      <div class="quote-translation">"And He placed between you affection and mercy." — Surah Ar-Rum (30:21)</div>
+    </div>
 
-<!-- RSVP Form -->
-<div class="card">
-<div class="subtitle">RSVP</div>
-<p style="font-size:0.85rem; margin-bottom: 15px; color:#666;">Please confirm your presence before October 31</p>
-<form onsubmit="submitRSVP(event)">
-<input type="text" placeholder="Your Full Name" required>
-<input type="email" placeholder="Your Email Address" required>
-<textarea rows="3" placeholder="Warm wishes or dietary requirements..."></textarea>
-<button type="submit" class="btn">Send Response</button>
-</form>
-</div>
+    <!-- Live Countdown Card -->
+    <div class="card">
+      <div class="subtitle">Counting Down to the Celebrations</div>
+      <div class="countdown-grid">
+        <div class="time-box">
+          <div class="time-num" id="days">00</div>
+          <div class="time-label">Days</div>
+        </div>
+        <div class="time-box">
+          <div class="time-num" id="hours">00</div>
+          <div class="time-label">Hours</div>
+        </div>
+        <div class="time-box">
+          <div class="time-num" id="mins">00</div>
+          <div class="time-label">Mins</div>
+        </div>
+        <div class="time-box">
+          <div class="time-num" id="secs">00</div>
+          <div class="time-label">Secs</div>
+        </div>
+      </div>
+      <p style="font-family: 'Montserrat', sans-serif; font-size: 0.85rem; color: var(--gold-light);">
+        Beginning December 11, 2026
+      </p>
+    </div>
 
-</div>
+    <!-- Event Schedule Timeline -->
+    <div class="card">
+      <div class="subtitle">Event Functions</div>
+      <div class="timeline">
+        
+        <div class="timeline-item">
+          <div class="event-date">FRIDAY, 11TH DECEMBER 2026 • EVENING</div>
+          <div class="event-title">Haldi Ceremony</div>
+          <p style="font-family: 'Montserrat', sans-serif; font-size:0.8rem; color:#d1b8c0;">
+            An evening of turmeric, blessings & traditional celebrations.
+          </p>
+        </div>
 
-<script>
-// Open Envelope Animation
-function openEnvelope() {
-const flap = document.getElementById('flap');
-const wrapper = document.getElementById('envelope-wrapper');
-const invitation = document.getElementById('invitation');
+        <div class="timeline-item">
+          <div class="event-date">SUNDAY, 13TH DECEMBER 2026 • EVENING</div>
+          <div class="event-title">Walima (Grand Reception)</div>
+          <p style="font-family: 'Montserrat', sans-serif; font-size:0.8rem; color:#d1b8c0;">
+            Join us for dinner as we celebrate the newlyweds.
+          </p>
+        </div>
 
-flap.style.transform = 'rotateX(180deg)';
+      </div>
+    </div>
 
-setTimeout(() => {
-wrapper.style.opacity = '0';
-wrapper.style.transform = 'scale(0.9)';
-setTimeout(() => {
-wrapper.style.display = 'none';
-invitation.classList.add('visible');
-playAudio();
-}, 500);
-}, 600);
-}
+    <!-- Venue Location Card -->
+    <div class="card">
+      <div class="subtitle">The Venue</div>
+      <p style="font-size: 1.3rem; font-weight: 600; color: var(--gold-light);">Avsar Party Plot</p>
+      <p style="font-family: 'Montserrat', sans-serif; color: #d1b8c0; margin: 5px 0 15px; font-size: 0.85rem;">
+        Kheda, Gujarat
+      </p>
+      <!-- Direct Google Maps link supplied -->
+      <a href="https://maps.app.goo.gl/EFmGYfiTsSV259vG8?g_st=ac" target="_blank" class="btn">
+        📍 Open Google Maps Location
+      </a>
+    </div>
 
-// Audio Playback Handler
-const audio = document.getElementById('bg-music');
-let isPlaying = false;
+    <!-- RSVP Section -->
+    <div class="card">
+      <div class="subtitle">RSVP</div>
+      <p style="font-family: 'Montserrat', sans-serif; font-size:0.8rem; margin-bottom: 15px; color:#d1b8c0;">
+        Please confirm your gracious presence
+      </p>
+      <form onsubmit="submitRSVP(event)">
+        <input type="text" placeholder="Your Name" required>
+        <input type="text" placeholder="Number of Guests" required>
+        <textarea rows="3" placeholder="Warm wishes & prayers for the couple..."></textarea>
+        <button type="submit" class="btn">Send RSVP</button>
+      </form>
+    </div>
 
-function playAudio() {
-audio.play().then(() => {
-isPlaying = true;
-}).catch(() => {
-// Handle browser autoplay policy restrictions
-});
-}
+  </div>
 
-function toggleAudio() {
-if (isPlaying) {
-audio.pause();
-isPlaying = false;
-} else {
-audio.play();
-isPlaying = true;
-}
-}
+  <script>
+    const videoWrapper = document.getElementById('video-wrapper');
+    const introVideo = document.getElementById('intro-video');
+    const videoOverlay = document.getElementById('video-overlay');
+    const skipBtn = document.getElementById('skip-btn');
+    const invitation = document.getElementById('invitation');
 
-// Countdown Timer Calculation
-const targetDate = new Date("Nov 25, 2026 16:00:00").getTime();
+    function startVideo() {
+      videoOverlay.style.display = 'none';
+      skipBtn.style.display = 'block';
+      introVideo.play();
+    }
 
-setInterval(() => {
-const now = new Date().getTime();
-const diff = targetDate - now;
+    introVideo.addEventListener('ended', finishVideo);
 
-if (diff > 0) {
-document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-document.getElementById('mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-document.getElementById('secs').innerText = Math.floor((diff % (1000 * 60)) / 1000);
-}
-}, 1000);
+    function finishVideo() {
+      videoWrapper.classList.add('hidden');
+      setTimeout(() => {
+        videoWrapper.style.display = 'none';
+        invitation.classList.add('visible');
+        playAudio();
+      }, 800);
+    }
 
-function submitRSVP(e) {
-e.preventDefault();
-alert("Thank you! Your RSVP has been received.");
-}
-</script>
+    // Audio Playback
+    const audio = document.getElementById('bg-music');
+    let isPlaying = false;
+
+    function playAudio() {
+      audio.play().then(() => {
+        isPlaying = true;
+      }).catch(() => {});
+    }
+
+    function toggleAudio() {
+      if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+      } else {
+        audio.play();
+        isPlaying = true;
+      }
+    }
+
+    // Countdown Timer set to Haldi Evening (Dec 11, 2026 18:00:00)
+    const targetDate = new Date("Dec 11, 2026 18:00:00").getTime();
+
+    setInterval(() => {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff > 0) {
+        document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+        document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById('mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        document.getElementById('secs').innerText = Math.floor((diff % (1000 * 60)) / 1000);
+      }
+    }, 1000);
+
+    function submitRSVP(e) {
+      e.preventDefault();
+      alert("Thank you! Your response and blessings have been received.");
+    }
+  </script>
 </body>
-</html> 
+</html>
+ 
